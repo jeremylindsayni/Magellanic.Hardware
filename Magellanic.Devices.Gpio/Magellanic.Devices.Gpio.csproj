@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Magellanic.Devices.Gpio.Abstractions\Magellanic.Devices.Gpio.Abstractions.csproj" />
+    <ProjectReference Include="..\Magellanic.Devices.Gpio.Core\Magellanic.Devices.Gpio.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="IGpioController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Magellanic.Devices.Gpio.Core\Magellanic.Devices.Gpio.Core.csproj" />
+  </ItemGroup>
+
+</Project>
