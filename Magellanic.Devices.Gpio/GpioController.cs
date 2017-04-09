@@ -43,31 +43,25 @@ namespace Magellanic.Devices.Gpio
             var gpioDirectoryPath = Path.Combine(DevicePath, string.Concat("gpio", pinNumber.ToString()));
 
             var gpioExportPath = Path.Combine(DevicePath, "export");
-
-            var osNameAndVersion = RuntimeInformation.OSDescription;
-
-            Console.WriteLine("Is windows? " + RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
-            Console.WriteLine("Is linux? " + RuntimeInformation.IsOSPlatform(OSPlatform.Linux));
-            Console.WriteLine("Full data: " + osNameAndVersion);
-
+            
             if (!Directory.Exists(gpioDirectoryPath))
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    // create the directory, and files
-                    Directory.CreateDirectory(gpioDirectoryPath);
-                    File.Create(Path.Combine(gpioDirectoryPath, "direction"));
-                    File.Create(Path.Combine(gpioDirectoryPath, "value"));
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
-                    && osNameAndVersion.Contains("Ubuntu"))
-                {
-                    File.WriteAllText(gpioExportPath, pinNumber.ToString());
-                }
-                else
-                {
-                    throw new NotSupportedException("This is an unsupported OS");
-                }
+                Console.WriteLine("Directory doesn't exist - exporting");
+                File.WriteAllText(gpioExportPath, pinNumber.ToString());
+                Console.WriteLine("Creating the directory");
+                Directory.CreateDirectory(gpioDirectoryPath);
+            }
+            
+            if (!File.Exists(Path.Combine(gpioDirectoryPath, "direction")))
+            {
+                Console.WriteLine("Direction file doesn't exist - creating");
+                File.Create(Path.Combine(gpioDirectoryPath, "direction"));
+            }
+
+            if (!File.Exists(Path.Combine(gpioDirectoryPath, "value")))
+            {
+                Console.WriteLine("Value file doesn't exist - creating");
+                File.Create(Path.Combine(gpioDirectoryPath, "value"));
             }
 
             return new GpioPin(pinNumber, gpioDirectoryPath);
