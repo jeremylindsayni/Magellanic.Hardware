@@ -40,7 +40,7 @@ namespace Magellanic.Devices.Gpio
             // add two empty files to this folder called "direction" and "value"
 
             // instantiate the gpiopin object to return with the pin number.
-            var gpioDirectoryPath = Path.Combine(DevicePath, "gpio", pinNumber.ToString());
+            var gpioDirectoryPath = Path.Combine(DevicePath, string.Concat("gpio", pinNumber.ToString()));
 
             var gpioExportPath = Path.Combine(DevicePath, "export");
 
