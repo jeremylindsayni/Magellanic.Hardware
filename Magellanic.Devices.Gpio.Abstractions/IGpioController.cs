@@ -1,4 +1,6 @@
-﻿namespace Magellanic.Devices.Gpio.Abstractions
+﻿using Magellanic.Devices.Gpio.Core;
+
+namespace Magellanic.Devices.Gpio.Abstractions
 {
     public interface IGpioController
     {

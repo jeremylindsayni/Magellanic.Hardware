@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Magellanic.Devices.Gpio.Abstractions\Magellanic.Devices.Gpio.Abstractions.csproj" />
+    <ProjectReference Include="..\Magellanic.Devices.Gpio.Core\Magellanic.Devices.Gpio.Core.csproj" />
+    <ProjectReference Include="..\Magellanic.Devices.Gpio\Magellanic.Devices.Gpio.csproj" />
+  </ItemGroup>
+
+</Project>
