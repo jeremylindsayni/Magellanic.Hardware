@@ -46,6 +46,10 @@ namespace Magellanic.Devices.Gpio
 
             var osNameAndVersion = RuntimeInformation.OSDescription;
 
+            Console.WriteLine("Is windows? " + RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
+            Console.WriteLine("Is linux? " + RuntimeInformation.IsOSPlatform(OSPlatform.Linux));
+            Console.WriteLine("Full data: " + osNameAndVersion);
+
             if (!Directory.Exists(gpioDirectoryPath))
             {
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -56,8 +60,7 @@ namespace Magellanic.Devices.Gpio
                     File.Create(Path.Combine(gpioDirectoryPath, "value"));
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
-                    && osNameAndVersion.Contains("Ubuntu")
-                    && osNameAndVersion.Contains("16.04"))
+                    && osNameAndVersion.Contains("Ubuntu"))
                 {
                     File.WriteAllText(gpioExportPath, pinNumber.ToString());
                 }

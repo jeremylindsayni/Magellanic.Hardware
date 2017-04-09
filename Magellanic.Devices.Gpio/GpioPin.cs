@@ -35,7 +35,7 @@ namespace Magellanic.Devices.Gpio
             }
             else
             {
-                throw new FileNotFoundException("No direction file found");
+                throw new FileNotFoundException("No direction file found at: " + Path.Combine(this.GpioPath, "direction"));
             }
         }
 
@@ -49,7 +49,7 @@ namespace Magellanic.Devices.Gpio
             }
             else
             {
-                throw new FileNotFoundException("No value file found");
+                throw new FileNotFoundException("No value file found at: " + Path.Combine(this.GpioPath, "value"));
             }
         }
     }
