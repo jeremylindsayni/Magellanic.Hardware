@@ -24,7 +24,7 @@ namespace Magellanic.Devices.Gpio
                     var piFolders = new DirectoryInfo(windows10IoTPackageFolder);
 
                     var biFrostFolder = piFolders.GetDirectories().Single(m => m.Name.StartsWith("Bifrost"));
-                    var localStateDirectory = b.GetDirectories().Single(m => m.Name.StartsWith("LocalState"));
+                    var localStateDirectory = biFrostFolder.GetDirectories().Single(m => m.Name.StartsWith("LocalState"));
                     DevicePath = localStateDirectory.FullName;
                 }
 
