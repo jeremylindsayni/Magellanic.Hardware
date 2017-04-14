@@ -1,0 +1,1 @@
+# Magellanic.Hardware
