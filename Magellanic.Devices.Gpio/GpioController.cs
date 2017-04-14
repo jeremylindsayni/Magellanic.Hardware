@@ -1,8 +1,8 @@
 ﻿using System;
 using Magellanic.Devices.Gpio.Abstractions;
-using Magellanic.Devices.Gpio.Core;
-using System.Runtime.InteropServices;
 using System.IO;
+using System.Linq;
+using System.Diagnostics;
 
 namespace Magellanic.Devices.Gpio
 {
@@ -16,6 +16,17 @@ namespace Magellanic.Devices.Gpio
             {
                 // need to pull the device directory from environment variable
                 DevicePath = Environment.GetEnvironmentVariable("GPIO_DIR");
+                
+                if (string.IsNullOrEmpty(DevicePath))
+                {
+                    var windows10IoTPackageFolder = @"c:\Data\Users\DefaultAccount\AppData\Local\Packages\";
+
+                    var piFolders = new DirectoryInfo(windows10IoTPackageFolder);
+
+                    var biFrostFolder = piFolders.GetDirectories().Single(m => m.Name.StartsWith("Bifrost"));
+                    var localStateDirectory = b.GetDirectories().Single(m => m.Name.StartsWith("LocalState"));
+                    DevicePath = localStateDirectory.FullName;
+                }
 
                 // need to check that the device path exists
                 if (string.IsNullOrEmpty(DevicePath))
@@ -33,37 +44,23 @@ namespace Magellanic.Devices.Gpio
         {
             if (pinNumber < 1 || pinNumber > 26)
             {
-                throw new ArgumentOutOfRangeException("Valie pins are between 1 and 26.");
+                throw new ArgumentOutOfRangeException("Valid pins are between 1 and 26.");
             }
             // add a file to the export directory with the name <<pin number>>
             // add folder under device path for "gpio<<pinNumber>>"
-            // add two empty files to this folder called "direction" and "value"
-
-            // instantiate the gpiopin object to return with the pin number.
             var gpioDirectoryPath = Path.Combine(DevicePath, string.Concat("gpio", pinNumber.ToString()));
 
             var gpioExportPath = Path.Combine(DevicePath, "export");
             
             if (!Directory.Exists(gpioDirectoryPath))
             {
-                Console.WriteLine("Directory doesn't exist - exporting");
+                Debug.WriteLine("Directory doesn't exist - exporting");
                 File.WriteAllText(gpioExportPath, pinNumber.ToString());
-                Console.WriteLine("Creating the directory");
+                Debug.WriteLine("Creating the directory");
                 Directory.CreateDirectory(gpioDirectoryPath);
             }
-            
-            if (!File.Exists(Path.Combine(gpioDirectoryPath, "direction")))
-            {
-                Console.WriteLine("Direction file doesn't exist - creating");
-                File.Create(Path.Combine(gpioDirectoryPath, "direction"));
-            }
 
-            if (!File.Exists(Path.Combine(gpioDirectoryPath, "value")))
-            {
-                Console.WriteLine("Value file doesn't exist - creating");
-                File.Create(Path.Combine(gpioDirectoryPath, "value"));
-            }
-
+            // instantiate the gpiopin object to return with the pin number.
             return new GpioPin(pinNumber, gpioDirectoryPath);
         }
     }

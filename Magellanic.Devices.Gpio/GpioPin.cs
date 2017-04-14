@@ -29,28 +29,14 @@ namespace Magellanic.Devices.Gpio
         {
             //var path = GpioController.DevicePath;
             // write in or out to the "direction" file for this pin.
-            if (File.Exists(Path.Combine(this.GpioPath, "direction")))
-            {
-                File.WriteAllText(Path.Combine(this.GpioPath, "direction"), "out");
-            }
-            else
-            {
-                throw new FileNotFoundException("No direction file found at: " + Path.Combine(this.GpioPath, "direction"));
-            }
+            File.WriteAllText(Path.Combine(this.GpioPath, "direction"), "out");
         }
 
         public void Write(GpioPinValue pinValue)
         {
             //var path = GpioController.DevicePath;
             // write a 1 or a 0 to the "value" file for this pin
-            if (File.Exists(Path.Combine(this.GpioPath, "value")))
-            {
-                File.WriteAllText(Path.Combine(this.GpioPath, "value"), ((int)pinValue).ToString());
-            }
-            else
-            {
-                throw new FileNotFoundException("No value file found at: " + Path.Combine(this.GpioPath, "value"));
-            }
+            File.WriteAllText(Path.Combine(this.GpioPath, "value"), ((int)pinValue).ToString());
         }
     }
 }

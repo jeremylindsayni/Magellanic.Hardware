@@ -1,6 +1,7 @@
 ﻿using Magellanic.Devices.Gpio;
 using Magellanic.Devices.Gpio.Core;
 using System;
+using System.Diagnostics;
 
 namespace GpioSwitch
 {
@@ -8,48 +9,70 @@ namespace GpioSwitch
     {
         static void Main(string[] args)
         {
+            Debug.WriteLine("Starting...");
             
-            Console.WriteLine("Starting...");
-            
-            if (args.Length != 1)
+            if (args.Length != 2)
             {
-                throw new ArgumentNullException("You must specify a logic level for Pin 26");
+                throw new ArgumentNullException("You must specify a pin and a logic level");
             }
-            else
-            {
-                if (args[0] != "1" && args[0] != "0")
-                {
-                    throw new ArgumentOutOfRangeException("Unknown logic level");
-                }
-            }
+
+            int pinNumber = ValidatePin(args[0]);
+            int logicLevel = ValidateLogicLevel(args[1]);
             
-            int value = Convert.ToInt16(args[0]);
-
-            Console.WriteLine("Hoping to switch light to status = " + args[0]);
-
             // create gpio controller
-            Console.WriteLine("About to instantiate the switch controller");
+            Debug.WriteLine("About to instantiate the switch controller");
             var controller = GpioController.Instance;
 
             // open pin
-            Console.WriteLine("Opening pin 26");
-            var pin = controller.OpenPin(26);
+            Debug.WriteLine("Opening pin " + pinNumber);
+            var pin = controller.OpenPin(pinNumber);
 
             // set direction
-            Console.WriteLine("Setting the direction to out");
+            Debug.WriteLine("Setting the direction to out");
             pin.SetDriveMode(GpioPinDriveMode.Output);
 
             // set value
-            if (value == 1)
+            if (logicLevel == 1)
             {
-                Console.WriteLine("Setting the value to high");
+                Debug.WriteLine("Setting the value to high");
                 pin.Write(GpioPinValue.High);
             }
             else
             {
-                Console.WriteLine("Setting the value to low");
+                Debug.WriteLine("Setting the value to low");
                 pin.Write(GpioPinValue.Low);
             }
+        }
+
+        private static int ValidateLogicLevel(string argLogicLevel)
+        {
+            if (argLogicLevel != "1" && argLogicLevel != "0")
+            {
+                throw new ArgumentOutOfRangeException("Unknown logic level");
+            }
+
+            return Convert.ToInt16(argLogicLevel);
+        }
+
+        private static int ValidatePin(string argPinNumber)
+        {
+            int pinNumber;
+
+            try
+            {
+                pinNumber = Int32.Parse(argPinNumber);
+
+                if (pinNumber < 1 || pinNumber > 26)
+                {
+                    throw new ArgumentOutOfRangeException("Unknown value for pin");
+                }
+            }
+            catch (Exception)
+            {
+                throw new ArgumentOutOfRangeException("Unknown value for pin");
+            }
+            
+            return pinNumber;
         }
     }
 }
