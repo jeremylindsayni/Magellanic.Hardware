@@ -4,11 +4,6 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <RuntimeFrameworkVersion>2.0.0-beta-001745-00</RuntimeFrameworkVersion>
     <RuntimeIdentifiers>win8-arm;ubuntu.14.04-arm;ubuntu.16.04-arm</RuntimeIdentifiers>
-    <PostBuildEvent>dotnet publish "C:\Users\Jeremy\Documents\Visual Studio 2017\Projects\Magellanic.Hardware\GpioSwitch\GpioSwitch.csproj" -r win8-arm
-
-xcopy /y "C:\Users\Jeremy\Documents\Visual Studio 2017\Projects\Magellanic.Hardware\GpioSwitch\bin\Debug\netcoreapp2.0\win8-arm\publish" "\\192.168.1.125\c$\CoreTest"</PostBuildEvent>
-    <PreBuildEvent>dotnet restore "C:\Users\Jeremy\Documents\Visual Studio 2017\Projects\Magellanic.Hardware\GpioSwitch\GpioSwitch.csproj"</PreBuildEvent>
-    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Magellanic.Devices.Gpio.Abstractions\Magellanic.Devices.Gpio.Abstractions.csproj" />
