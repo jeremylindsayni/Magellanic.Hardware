@@ -5,10 +5,12 @@ using System.Diagnostics;
 
 namespace GpioSwitch
 {
-    class Program
+    class Program : Bifröst
     {
         static void Main(string[] args)
         {
+            BifröstDiagnostics();  
+            
             Debug.WriteLine("Starting...");
             
             if (args.Length != 2)
@@ -41,7 +43,7 @@ namespace GpioSwitch
             {
                 Debug.WriteLine("Setting the value to low");
                 pin.Write(GpioPinValue.Low);
-            }
+            }  
         }
 
         private static int ValidateLogicLevel(string argLogicLevel)

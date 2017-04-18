@@ -3,6 +3,7 @@ using Magellanic.Devices.Gpio.Abstractions;
 using System.IO;
 using System.Linq;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Magellanic.Devices.Gpio
 {
@@ -14,24 +15,33 @@ namespace Magellanic.Devices.Gpio
         {
             get
             {
-                // need to pull the device directory from environment variable
-                DevicePath = Environment.GetEnvironmentVariable("GPIO_DIR");
-                
-                if (string.IsNullOrEmpty(DevicePath))
-                {
-                    var windows10IoTPackageFolder = @"c:\Data\Users\DefaultAccount\AppData\Local\Packages\";
+                bool isWindows = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
-                    var piFolders = new DirectoryInfo(windows10IoTPackageFolder);
+                if (isWindows) 
+                {
+                    var localAppData = Environment.GetEnvironmentVariable("LOCALAPPDATA");
+
+                    localAppData = localAppData.Replace("Administrator", "DefaultAccount");
+
+                    localAppData = Path.Combine(localAppData, "Packages");
+
+                    var piFolders = new DirectoryInfo(localAppData);
 
                     var biFrostFolder = piFolders.GetDirectories().Single(m => m.Name.StartsWith("Bifrost"));
+
                     var localStateDirectory = biFrostFolder.GetDirectories().Single(m => m.Name.StartsWith("LocalState"));
+                    
                     DevicePath = localStateDirectory.FullName;
+                }
+                else 
+                {
+                    DevicePath = @"/sys/class/gpio";
                 }
 
                 // need to check that the device path exists
                 if (string.IsNullOrEmpty(DevicePath))
                 {
-                    throw new NullReferenceException("There is no value for GPIO_DIR");
+                    throw new NullReferenceException("There is no value for the GPIO Directory.");
                 }
 
                 return instance;
