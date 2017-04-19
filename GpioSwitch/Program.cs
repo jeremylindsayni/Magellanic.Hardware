@@ -5,12 +5,10 @@ using System.Diagnostics;
 
 namespace GpioSwitch
 {
-    class Program : Bifröst
+    class Program
     {
         static void Main(string[] args)
         {
-            BifröstDiagnostics();  
-            
             Debug.WriteLine("Starting...");
             
             if (args.Length != 2)
